@@ -30,10 +30,10 @@ app.use(express.json());
 app.get("/", (req, res) => {
   res.send("Hello Technigo!");
 });
-app.post("/api/auth", authRoute);
-app.post("/api/users", userRoute);
-app.post("/api/posts", postRoute);
-app.post("/api/categories", categoryRoute);
+app.use("/api/auth", authRoute);
+app.use("/api/users", userRoute);
+app.use("/api/posts", postRoute);
+app.use("/api/categories", categoryRoute);
 // Start the server
 app.listen(port, () => {
   console.log("hello");
