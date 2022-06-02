@@ -14,6 +14,8 @@ const authRoute = require("./routes/auth");
 const userRoute = require("./routes/users");
 const postRoute = require("./routes/posts");
 const categoryRoute = require("./routes/categories");
+const multer = require("multer");
+
 //connection to monogDB
 const mongoUrl = process.env.MONGO_URL;
 mongoose
@@ -22,6 +24,20 @@ mongoose
   .catch((error) => console.log(error));
 mongoose.Promise = Promise;
 
+//stores images
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, "images");
+  },
+  filename: (req, file, cb) => {
+    cb(null, "picture.jpeg");
+  },
+});
+
+const upload = multer({ storage: storage });
+app.post("/api/uploads", upload.single("file"), (req, res) => {
+  res.status(200).json("file uploaded");
+});
 // Add middlewares to enable cors and json body parsing
 app.use(cors());
 app.use(express.json());
