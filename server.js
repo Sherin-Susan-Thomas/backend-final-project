@@ -44,7 +44,7 @@ app.use(express.json());
 
 // Start defining your routes here
 app.get("/", (req, res) => {
-  res.send("Hello Technigo!");
+  res.send(" Technigo Final Project");
 });
 app.use("/api/auth", authRoute);
 app.use("/api/users", userRoute);
@@ -52,6 +52,5 @@ app.use("/api/posts", postRoute);
 app.use("/api/categories", categoryRoute);
 // Start the server
 app.listen(port, () => {
-  console.log("hello");
   console.log(`Server running on http://localhost:${port}`);
 });

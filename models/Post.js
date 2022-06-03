@@ -23,7 +23,7 @@ const PostSchema = new mongoose.Schema(
       type: Array,
       required: false,
     },
-    hearts: {
+    likes: {
       type: Number,
       default: 0,
     },

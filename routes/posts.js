@@ -60,6 +60,36 @@ router.delete("/:id", async (req, res) => {
     res.status(500).json(err);
   }
 });
+
+//like a post
+router.post("/:id/likePost", async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const postToLike = await Post.findByIdAndUpdate(id, {
+      $inc: { hearts: 1 },
+    });
+    res.status(201).json(postToLike);
+  } catch (err) {
+    res.status(400).json({
+      success: false,
+      status_code: 400,
+      message: "Bad request, couldnot like the post!",
+      error: err.errors,
+    });
+  }
+});
+//comment on a post
+router.post("/:id/commentPost", async (req, res) => {
+  const { id } = req.params;
+  const { value } = req.body;
+
+  const post = await Post.findById(id);
+  post.comments.push(value);
+  const updatedPost = await Post.findByIdAndUpdate(id, post, { new: true });
+  res.status(200).json(updatedPost);
+});
+
 //Get a post
 router.get("/:id", async (req, res) => {
   try {
@@ -87,7 +117,7 @@ router.get("/", async (req, res) => {
         },
       });
     } else {
-      posts = await Post.find().sort({ createdAt: "desc" }).limit(20).exec();
+      posts = await Post.find().sort({ createdAt: "desc" }).limit(6).exec();
     }
     res.status(200).json(posts);
   } catch (err) {
