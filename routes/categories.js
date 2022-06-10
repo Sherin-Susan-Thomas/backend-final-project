@@ -1,7 +1,28 @@
 const router = require("express").Router();
 const Category = require("../models/Category");
+const User = require("../models/User");
 
-router.post("/", async (req, res) => {
+const authenticateUser = async (req, res, next) => {
+  const accessToken = req.header("Authorization");
+  try {
+    const user = await User.findOne({ accessToken: accessToken });
+    if (user) {
+      next();
+    } else {
+      res.status(401).json({
+        response: "Please log in",
+        success: false,
+      });
+    }
+  } catch (error) {
+    res.status(400).json({
+      response: error,
+      success: false,
+    });
+  }
+};
+
+router.post("/", authenticateUser, async (req, res) => {
   const newCategory = new Category(req.body);
   try {
     const savedCategory = await newCategory.save();
@@ -13,7 +34,8 @@ router.post("/", async (req, res) => {
     });
   }
 });
-router.get("/", async (req, res) => {
+
+router.get("/", authenticateUser, async (req, res) => {
   try {
     const category = await Category.find();
     res.status(200).json(category);

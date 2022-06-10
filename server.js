@@ -10,6 +10,7 @@ const dotenv = require("dotenv");
 dotenv.config();
 const port = process.env.PORT || 8080;
 const app = express();
+const User = require("./models/User");
 const authRoute = require("./routes/auth");
 const userRoute = require("./routes/users");
 const postRoute = require("./routes/posts");
@@ -33,11 +34,36 @@ const storage = multer.diskStorage({
     cb(null, "picture.jpeg");
   },
 });
+const authenticateUser = async (req, res, next) => {
+  const accessToken = req.header("Authorization");
+  try {
+    const user = await User.findOne({ accessToken: accessToken });
+    if (user) {
+      next();
+    } else {
+      res.status(401).json({
+        response: "Please log in",
+        success: false,
+      });
+    }
+  } catch (error) {
+    res.status(400).json({
+      response: error,
+      success: false,
+    });
+  }
+};
 
 const upload = multer({ storage: storage });
-app.post("/api/uploads", upload.single("file"), (req, res) => {
-  res.status(200).json("file uploaded");
-});
+app.post(
+  "/api/uploads",
+  authenticateUser,
+  upload.single("file"),
+  (req, res) => {
+    res.status(200).json("file uploaded");
+  }
+);
+
 // Add middlewares to enable cors and json body parsing
 app.use(cors());
 app.use(express.json());

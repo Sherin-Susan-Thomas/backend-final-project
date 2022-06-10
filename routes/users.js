@@ -3,8 +3,27 @@ const User = require("../models/User");
 const Post = require("../models/Post");
 const bcrypt = require("bcrypt");
 
+const authenticateUser = async (req, res, next) => {
+  const accessToken = req.header("Authorization");
+  try {
+    const user = await User.findOne({ accessToken: accessToken });
+    if (user) {
+      next();
+    } else {
+      res.status(401).json({
+        response: "Please log in",
+        success: false,
+      });
+    }
+  } catch (error) {
+    res.status(400).json({
+      response: error,
+      success: false,
+    });
+  }
+};
 //UPDATE
-router.put("/:id", async (req, res) => {
+router.put("/:id", authenticateUser, async (req, res) => {
   if (req.body.userId === req.params.id) {
     if (req.body.password) {
       const salt = await bcrypt.genSalt(10);
@@ -31,7 +50,7 @@ router.put("/:id", async (req, res) => {
 });
 
 //DELETE
-router.delete("/:id", async (req, res) => {
+router.delete("/:id", authenticateUser, async (req, res) => {
   if (req.body.userId === req.params.id) {
     try {
       const user = await User.findById(req.params.id);
@@ -54,7 +73,8 @@ router.delete("/:id", async (req, res) => {
 });
 
 //GET USER
-router.get("/:id", async (req, res) => {
+
+router.get("/:id", authenticateUser, async (req, res) => {
   try {
     const user = await User.findById(req.params.id);
     res.status(201).json({

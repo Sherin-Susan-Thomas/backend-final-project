@@ -3,8 +3,28 @@ const User = require("../models/User");
 
 const Post = require("../models/Post");
 
+const authenticateUser = async (req, res, next) => {
+  const accessToken = req.header("Authorization");
+  try {
+    const user = await User.findOne({ accessToken: accessToken });
+    if (user) {
+      next();
+    } else {
+      res.status(401).json({
+        response: "Please log in",
+        success: false,
+      });
+    }
+  } catch (error) {
+    res.status(400).json({
+      response: error,
+      success: false,
+    });
+  }
+};
 //Create a new post
-router.post("/", async (req, res) => {
+
+router.post("/", authenticateUser, async (req, res) => {
   const newPost = new Post(req.body);
   try {
     const savedPost = await newPost.save();
@@ -18,7 +38,7 @@ router.post("/", async (req, res) => {
 });
 
 //Update a new post
-router.put("/:id", async (req, res) => {
+router.put("/:id", authenticateUser, async (req, res) => {
   try {
     const post = await Post.findById(req.params.id);
     if (post.username === req.body.username) {
@@ -43,7 +63,7 @@ router.put("/:id", async (req, res) => {
 });
 
 //Delete a new post
-router.delete("/:id", async (req, res) => {
+router.delete("/:id", authenticateUser, async (req, res) => {
   try {
     const post = await Post.findById(req.params.id);
     if (post.username === req.body.username) {
@@ -62,12 +82,12 @@ router.delete("/:id", async (req, res) => {
 });
 
 //like a post
-router.post("/:id/likePost", async (req, res) => {
+router.post("/:id/likePost", authenticateUser, async (req, res) => {
   const { id } = req.params;
 
   try {
     const postToLike = await Post.findByIdAndUpdate(id, {
-      $inc: { hearts: 1 },
+      $inc: { likes: 1 },
     });
     res.status(201).json(postToLike);
   } catch (err) {
@@ -80,7 +100,7 @@ router.post("/:id/likePost", async (req, res) => {
   }
 });
 //comment on a post
-router.post("/:id/commentPost", async (req, res) => {
+router.post("/:id/commentPost", authenticateUser, async (req, res) => {
   const { id } = req.params;
   const { value } = req.body;
 
@@ -91,7 +111,8 @@ router.post("/:id/commentPost", async (req, res) => {
 });
 
 //Get a post
-router.get("/:id", async (req, res) => {
+
+router.get("/:id", authenticateUser, async (req, res) => {
   try {
     const post = await Post.findById(req.params.id);
     res.status(201).json(post);
@@ -103,7 +124,8 @@ router.get("/:id", async (req, res) => {
   }
 });
 //get all posts
-router.get("/", async (req, res) => {
+
+router.get("/", authenticateUser, async (req, res) => {
   const username = req.query.user;
   const categoryNames = req.query.category;
   try {
