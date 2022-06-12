@@ -99,16 +99,6 @@ router.post("/:id/likePost", authenticateUser, async (req, res) => {
     });
   }
 });
-//comment on a post
-router.post("/:id/commentPost", authenticateUser, async (req, res) => {
-  const { id } = req.params;
-  const { value } = req.body;
-
-  const post = await Post.findById(id);
-  post.comments.push(value);
-  const updatedPost = await Post.findByIdAndUpdate(id, post, { new: true });
-  res.status(200).json(updatedPost);
-});
 
 //Get a post
 
