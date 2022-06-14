@@ -34,6 +34,11 @@ const storage = multer.diskStorage({
     cb(null, "picture.jpeg");
   },
 });
+
+const upload = multer({ storage: storage });
+app.post("/api/uploads", upload.single("file"), (req, res) => {
+  res.status(200).json("file uploaded");
+});
 const authenticateUser = async (req, res, next) => {
   const accessToken = req.header("Authorization");
   try {
@@ -53,16 +58,6 @@ const authenticateUser = async (req, res, next) => {
     });
   }
 };
-
-const upload = multer({ storage: storage });
-app.post(
-  "/api/uploads",
-  authenticateUser,
-  upload.single("file"),
-  (req, res) => {
-    res.status(200).json("file uploaded");
-  }
-);
 
 // Add middlewares to enable cors and json body parsing
 app.use(cors());

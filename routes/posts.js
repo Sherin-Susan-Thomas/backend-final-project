@@ -102,7 +102,7 @@ router.post("/:id/likePost", authenticateUser, async (req, res) => {
 
 //Get a post
 
-router.get("/:id", authenticateUser, async (req, res) => {
+router.get("/:id", async (req, res) => {
   try {
     const post = await Post.findById(req.params.id);
     res.status(201).json(post);
