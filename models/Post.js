@@ -15,9 +15,8 @@ const PostSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    postedBy: {
+    username: {
       type: String,
-      required: true,
     },
     categories: {
       type: Array,
