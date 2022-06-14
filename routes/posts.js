@@ -3,32 +3,16 @@ const User = require("../models/User");
 
 const Post = require("../models/Post");
 
-const authenticateUser = async (req, res, next) => {
-  const accessToken = req.header("Authorization");
-  try {
-    const user = await User.findOne({ accessToken: accessToken });
-    if (user) {
-      next();
-    } else {
-      res.status(401).json({
-        response: "Please log in",
-        success: false,
-      });
-    }
-  } catch (error) {
-    res.status(400).json({
-      response: error,
-      success: false,
-    });
-  }
-};
 //Create a new post
 
 router.post("/", async (req, res) => {
   const newPost = new Post(req.body);
   try {
     const savedPost = await newPost.save();
-    res.status(200).json(savedPost);
+    res.status(200).json({
+      response: { savedPost },
+      success: true,
+    });
   } catch (error) {
     res.status(400).json({
       response: error,
@@ -38,7 +22,7 @@ router.post("/", async (req, res) => {
 });
 
 //Update a new post
-router.put("/:id", authenticateUser, async (req, res) => {
+router.put("/:id", async (req, res) => {
   try {
     const post = await Post.findById(req.params.id);
     if (post.username === req.body.username) {
@@ -63,7 +47,7 @@ router.put("/:id", authenticateUser, async (req, res) => {
 });
 
 //Delete a new post
-router.delete("/:id", authenticateUser, async (req, res) => {
+router.delete("/:id", async (req, res) => {
   try {
     const post = await Post.findById(req.params.id);
     if (post.username === req.body.username) {
@@ -82,7 +66,7 @@ router.delete("/:id", authenticateUser, async (req, res) => {
 });
 
 //like a post
-router.post("/:id/likePost", authenticateUser, async (req, res) => {
+router.post("/:id/likePost", async (req, res) => {
   const { id } = req.params;
 
   try {
