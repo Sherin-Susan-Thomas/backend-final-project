@@ -102,7 +102,7 @@ router.post("/:id/likePost", authenticateUser, async (req, res) => {
 
 //Get a post
 
-router.get("/:id", async (req, res) => {
+router.get("/:id", authenticateUser, async (req, res) => {
   try {
     const post = await Post.findById(req.params.id);
     res.status(201).json(post);
@@ -115,7 +115,7 @@ router.get("/:id", async (req, res) => {
 });
 //get all posts
 
-router.get("/", authenticateUser, async (req, res) => {
+router.get("/", async (req, res) => {
   const username = req.query.user;
   const categoryNames = req.query.category;
   try {
