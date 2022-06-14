@@ -15,7 +15,7 @@ const PostSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    username: {
+    postedBy: {
       type: String,
       required: true,
     },
