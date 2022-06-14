@@ -35,7 +35,7 @@ router.post("/", authenticateUser, async (req, res) => {
   }
 });
 
-router.get("/", authenticateUser, async (req, res) => {
+router.get("/", async (req, res) => {
   try {
     const category = await Category.find();
     res.status(200).json(category);
