@@ -22,7 +22,7 @@ const authenticateUser = async (req, res, next) => {
   }
 };
 
-router.post("/", authenticateUser, async (req, res) => {
+router.post("/", async (req, res) => {
   const newCategory = new Category(req.body);
   try {
     const savedCategory = await newCategory.save();

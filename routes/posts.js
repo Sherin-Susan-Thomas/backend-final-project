@@ -24,7 +24,7 @@ const authenticateUser = async (req, res, next) => {
 };
 //Create a new post
 
-router.post("/", authenticateUser, async (req, res) => {
+router.post("/", async (req, res) => {
   const newPost = new Post(req.body);
   try {
     const savedPost = await newPost.save();
@@ -38,7 +38,7 @@ router.post("/", authenticateUser, async (req, res) => {
 });
 
 //Update a new post
-router.put("/:id", authenticateUser, async (req, res) => {
+router.put("/:id", async (req, res) => {
   try {
     const post = await Post.findById(req.params.id);
     if (post.username === req.body.username) {
@@ -63,7 +63,7 @@ router.put("/:id", authenticateUser, async (req, res) => {
 });
 
 //Delete a new post
-router.delete("/:id", authenticateUser, async (req, res) => {
+router.delete("/:id", async (req, res) => {
   try {
     const post = await Post.findById(req.params.id);
     if (post.username === req.body.username) {
@@ -82,7 +82,7 @@ router.delete("/:id", authenticateUser, async (req, res) => {
 });
 
 //like a post
-router.post("/:id/likePost", authenticateUser, async (req, res) => {
+router.post("/:id/likePost", async (req, res) => {
   const { id } = req.params;
 
   try {
@@ -102,7 +102,7 @@ router.post("/:id/likePost", authenticateUser, async (req, res) => {
 
 //Get a post
 
-router.get("/:id", authenticateUser, async (req, res) => {
+router.get("/:id", async (req, res) => {
   try {
     const post = await Post.findById(req.params.id);
     res.status(201).json(post);
