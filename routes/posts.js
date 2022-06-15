@@ -66,20 +66,20 @@ router.delete("/:id", async (req, res) => {
 });
 
 //like a post
-router.post("/:id/likePost", async (req, res) => {
-  const { id } = req.params;
-
+router.put("/:id/like", async (req, res) => {
   try {
-    const postToLike = await Post.findByIdAndUpdate(id, {
-      $inc: { likes: 1 },
-    });
-    res.status(201).json(postToLike);
+    const post = await Post.findById(req.params.id);
+    if (!post.likes.includes(req.body.username)) {
+      await post.updateOne({ $pull: { likes: req.body.username } });
+      res.status(200).json("Post has been liked....");
+    } else {
+      await post.updateOne({ $pull: { likes: req.body.username } });
+      res.status(200).json("The post has been disliked");
+    }
   } catch (err) {
     res.status(400).json({
+      response: error,
       success: false,
-      status_code: 400,
-      message: "Bad request, couldnot like the post!",
-      error: err.errors,
     });
   }
 });
