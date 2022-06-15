@@ -16,7 +16,8 @@ const userRoute = require("./routes/users");
 const postRoute = require("./routes/posts");
 const categoryRoute = require("./routes/categories");
 const multer = require("multer");
-
+const cors = require("cors");
+app.use(cors());
 //connection to monogDB
 const mongoUrl = process.env.MONGO_URL;
 mongoose
@@ -71,6 +72,9 @@ app.use("/api/auth", authRoute);
 app.use("/api/users", userRoute);
 app.use("/api/posts", postRoute);
 app.use("/api/categories", categoryRoute);
+app.use((req, res, next) => {
+  res.header("Access-Control-Allow-Origin", "*");
+});
 // Start the server
 app.listen(port, () => {
   console.log(`Server running on http://localhost:${port}`);
