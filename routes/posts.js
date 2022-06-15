@@ -66,20 +66,20 @@ router.delete("/:id", async (req, res) => {
 });
 
 //like a post
-router.put("/:id/like", async (req, res) => {
+router.put("/:postId/like", async (req, res) => {
+  const { postId } = req.params;
+
   try {
-    const post = await Post.findById(req.params.id);
-    if (!post.likes.includes(req.body.username)) {
-      await post.updateOne({ $pull: { likes: req.body.username } });
-      res.status(200).json("Post has been liked....");
-    } else {
-      await post.updateOne({ $pull: { likes: req.body.username } });
-      res.status(200).json("The post has been disliked");
-    }
+    const thoughtsToLike = await Thoughts.findByIdAndUpdate(postId, {
+      $inc: { hearts: 1 },
+    });
+    res.status(201).json(thoughtsToLike);
   } catch (err) {
     res.status(400).json({
-      response: error,
       success: false,
+      status_code: 400,
+      message: "Bad request, could not find and update the thought.Try again!",
+      error: err.errors,
     });
   }
 });
