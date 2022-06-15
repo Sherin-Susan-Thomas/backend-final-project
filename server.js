@@ -16,8 +16,7 @@ const userRoute = require("./routes/users");
 const postRoute = require("./routes/posts");
 const categoryRoute = require("./routes/categories");
 const multer = require("multer");
-const cors = require("cors");
-app.use(cors());
+
 //connection to monogDB
 const mongoUrl = process.env.MONGO_URL;
 mongoose
