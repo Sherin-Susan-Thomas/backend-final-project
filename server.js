@@ -23,7 +23,6 @@ mongoose
   .connect(mongoUrl, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
-    useFindAndModify: true,
   })
   .then(console.log("connected to mongoDB"))
   .catch((error) => console.log(error));
