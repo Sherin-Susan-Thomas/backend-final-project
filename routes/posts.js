@@ -70,7 +70,7 @@ router.put("/:id/like", async (req, res) => {
   try {
     const post = await Post.findById(req.params.id);
     if (!post.likes.includes(req.body.username)) {
-      await post.updateOne({ $pull: { likes: req.body.username } });
+      await post.updateOne({ $push: { likes: req.body.username } });
       res.status(200).json("Post has been liked....");
     } else {
       await post.updateOne({ $pull: { likes: req.body.username } });

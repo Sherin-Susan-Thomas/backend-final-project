@@ -23,10 +23,11 @@ const PostSchema = new mongoose.Schema(
     },
     comments: {
       type: Array,
-      required: false,
+      default: [],
     },
     likes: {
       type: Array,
+      default: [],
     },
   },
   { timestamps: true }
