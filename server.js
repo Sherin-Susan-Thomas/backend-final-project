@@ -20,7 +20,11 @@ const multer = require("multer");
 //connection to monogDB
 const mongoUrl = process.env.MONGO_URL;
 mongoose
-  .connect(mongoUrl, { useNewUrlParser: true, useUnifiedTopology: true })
+  .connect(mongoUrl, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+    useFindAndModify: true,
+  })
   .then(console.log("connected to mongoDB"))
   .catch((error) => console.log(error));
 mongoose.Promise = Promise;
