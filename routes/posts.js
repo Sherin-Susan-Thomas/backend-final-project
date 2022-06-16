@@ -113,7 +113,7 @@ router.get("/", async (req, res) => {
         },
       });
     } else {
-      posts = await Post.find().sort({ createdAt: "desc" }).limit(8).exec();
+      posts = await Post.find().sort({ createdAt: "desc" }).limit(20).exec();
     }
     res.status(200).json(posts);
   } catch (err) {
