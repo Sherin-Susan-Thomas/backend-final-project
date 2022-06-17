@@ -15,6 +15,7 @@ const authRoute = require("./routes/auth");
 const userRoute = require("./routes/users");
 const postRoute = require("./routes/posts");
 const categoryRoute = require("./routes/categories");
+const commentRoute = require("./routes/comments");
 const multer = require("multer");
 
 //connection to monogDB
@@ -61,13 +62,7 @@ const authenticateUser = async (req, res, next) => {
     });
   }
 };
-const cors = require("cors");
-const corsOptions = {
-  origin: "http://localhost:3000",
-  credentials: true, //access-control-allow-credentials:true
-  optionSuccessStatus: 200,
-};
-app.use(cors(corsOptions));
+
 // Add middlewares to enable cors and json body parsing
 app.use(cors());
 app.use(express.json());
@@ -80,6 +75,7 @@ app.use("/api/auth", authRoute);
 app.use("/api/users", userRoute);
 app.use("/api/posts", postRoute);
 app.use("/api/categories", categoryRoute);
+app.use("/api/comments", commentRoute);
 app.use((req, res, next) => {
   res.header("Access-Control-Allow-Origin", "*");
 });
