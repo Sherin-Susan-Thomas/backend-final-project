@@ -18,6 +18,11 @@ const categoryRoute = require("./routes/categories");
 
 const multer = require("multer");
 
+app.get("/cors", (req, res) => {
+  res.set("Access-Control-Allow-Origin", "*");
+  res.send({ msg: "This has CORS enabled" });
+});
+
 //connection to monogDB
 const mongoUrl = process.env.MONGO_URL;
 mongoose
