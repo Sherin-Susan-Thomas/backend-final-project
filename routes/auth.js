@@ -5,7 +5,7 @@ import bcrypt from "bcrypt";
 //REGISTER
 router.post("/register", async (req, res) => {
   try {
-    const { username, email, password, profilepicture } = req.body;
+    const { username, email, password } = req.body;
 
     const salt = await bcrypt.genSaltSync();
     if (password.length < 8) {
@@ -18,14 +18,12 @@ router.post("/register", async (req, res) => {
         username: username,
         email: email,
         password: bcrypt.hashSync(password, salt),
-        profilepicture,
       }).save();
       res.status(201).json({
         response: {
           username: newUser.username,
           email: newUser.email,
           accessToken: newUser.accessToken,
-          profilepicture: newUser.profilepicture,
         },
         success: true,
       });
