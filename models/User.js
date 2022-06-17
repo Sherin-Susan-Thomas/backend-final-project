@@ -18,7 +18,8 @@ const UserSchema = new mongoose.Schema(
     },
     profilepicture: {
       type: String,
-      default: "",
+      default:
+        "https://icon-library.com/images/anonymous-avatar-icon/anonymous-avatar-icon-25.jpg",
     },
     accessToken: {
       type: String,
