@@ -1,13 +1,7 @@
-# Express API Starter Project
+Check out the backend for full-stack project for final project in Technigo built using MongoDB, Express, React, Node.js. The goal was to create an webpage similar to instagram where users can share their Travel memories with other users. The users can create a profile, add a post with images, edit or delete the post. Users can also update their profile and also add/change their profile picture. Users can sort the posts according to the username or tags.
 
-This project includes the packages and babel setup for an express server, and is just meant to make things a little simpler to get up and running with.
+Check it out live at https://finalproject-js.netlify.app/
 
-## Getting started
+To test it out, create a new profile or use Username: tester1 password: Tester@1
 
-Install dependencies with `npm install`, then start the server by running `npm run dev`
-
-## View it live
-
-Every project should be deployed somewhere. Be sure to include the link to the deployed project so that the viewer can click around and see what it's all about.
-
-url : https://final-sprint.herokuapp.com/api
+heroku link : https://final-sprint.herokuapp.com/api
